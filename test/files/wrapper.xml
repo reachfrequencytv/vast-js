@@ -1,0 +1,7 @@
+<VAST version="3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="vast.xsd">
+  <Ad id="223626102">
+    <Wrapper>
+      <VASTAdTagURI>http://localhost:3001</VASTAdTagURI>
+    </Wrapper>
+  </Ad>
+</VAST>

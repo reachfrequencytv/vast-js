@@ -1,0 +1,1 @@
+var ads = vast('http://adserver.com/vast.xml');

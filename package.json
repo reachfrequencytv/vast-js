@@ -1,0 +1,28 @@
+{
+  "name": "vast-js",
+  "version": "1.0.0",
+  "description": "parse vast-xml documents with javascript",
+  "main": "index.js",
+  "testling": {
+    "harness": "mocha",
+    "files": "test/spec/index.spec.js"
+  },
+  "scripts": {
+    "testling": "testling -u",
+    "test": "mocha --recursive --reporter spec test/spec"
+  },
+  "author": "Tom Buchok <tom@buchok.com> (http://buchok.com/)",
+  "license": "ISC",
+  "dependencies": {
+    "core-util-is": "^1.0.1",
+    "hyperquest": "^1.0.1",
+    "inherits": "^2.0.1",
+    "sax": "^0.6.1",
+    "util-extend": "^1.0.1"
+  },
+  "devDependencies": {
+    "browserify": "^6.3.2",
+    "mocha": "^2.0.1",
+    "should": "^4.3.0"
+  }
+}
