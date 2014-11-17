@@ -7,7 +7,7 @@ var should = require('should')
 
 describe('VastXmlParser', function() {
   describe('#transform', function() {
-    describe('- basic properties (dfa)', function() {
+    describe('- inline', function() {
       var data, ad;
       before(function(done) {
         var xml = path.join(process.cwd(), 'test', 'files', 'dfa.xml');
