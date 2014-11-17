@@ -7,13 +7,17 @@ var should = require('should')
 
 describe('VastXmlParser', function() {
   describe('#transform', function() {
-    describe('- basic properties', function() {
-      var data;
+    describe('- basic properties (dfa)', function() {
+      var data, ad;
       before(function(done) {
         var xml = path.join(process.cwd(), 'test', 'files', 'dfa.xml');
         fs.createReadStream(xml)
           .pipe(parser())
-          .on('data', function(chunk) { data = chunk })
+          .on('data', function(chunk) {
+            data = chunk;
+            ad = data.ads[0];
+            creative = ad.creatives[0];
+          })
           .on('end', done)
         ;
       });
@@ -26,8 +30,42 @@ describe('VastXmlParser', function() {
       it('should create an `ads` list', function() {
         Array.isArray(data.ads).should.be.ok;
       });
-      it('should add the attributes for ads', function() {
-        data.ads[0].id.should.eql(223626102);
+      it('should have ad.id', function() {
+        ad.id.should.eql(223626102);
+      });
+      it('should have ad.system', function() {
+        ad.system.version.should.eql('2.0');
+        ad.system.value.should.eql('DART_DFA');
+      });
+      it('should have ad.title', function() {
+        ad.title.should.eql('In-Stream Video');
+      });
+      it('should have ad.description', function() {
+        ad.description.should.eql('A test creative with a description.');
+      });
+      it('should have ad.description', function() {
+        ad.description.should.eql('A test creative with a description.');
+      });
+      it('should have ad.survey', function() {
+        ad.survey.should.eql('Foo');
+      });
+      it('should have ad.impressions', function() {
+        ad.impressions.length.should.eql(2);
+      });
+      it('should have ad.creatives', function() {
+        ad.creatives.length.should.eql(2);
+      });
+      it('should have creative.sequence', function() {
+        creative.sequence.should.eql(1);
+      });
+      it('should have creative.sequence', function() {
+        creative.adId.should.not.be.ok;
+      });
+      it('should have creative.type', function() {
+        creative.type.should.eql('linear');
+      });
+      it('should have creative.duration', function() {
+        creative.duration.should.eql('00:00:58');
       });
     });
     describe('- wrapper', function() {
