@@ -19,7 +19,7 @@ vast('http://adserver.com/vast.xml')
         * creative.duration
         // type => firstQuatile
         * creative.trackingEvents['type'].forEach(function(trackingEvent) {
-          * trackingEvent.url
+          * trackingEvent
         });
         * creative.adParameters:String
         // type => clickThrough|clickTracking

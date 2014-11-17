@@ -67,6 +67,33 @@ describe('VastXmlParser', function() {
       it('should have creative.duration', function() {
         creative.duration.should.eql('00:00:58');
       });
+      it('should have creative.trackingEvents.start', function() {
+        creative.trackingEvents['start'].length.should.eql(1);
+      });
+      it('should have creative.trackingEvents.firstQuartile', function() {
+        creative.trackingEvents['firstQuartile'].length.should.eql(2);
+      });
+      it('should have creative.trackingEvents.midpoint', function() {
+        creative.trackingEvents['midpoint'].length.should.eql(2);
+      });
+      it('should have creative.trackingEvents.thirdQuartile', function() {
+        creative.trackingEvents['thirdQuartile'].length.should.eql(2);
+      });
+      it('should have creative.trackingEvents.complete', function() {
+        creative.trackingEvents['complete'].length.should.eql(2);
+      });
+      it('should have creative.trackingEvents.mute', function() {
+        creative.trackingEvents['mute'].length.should.eql(1);
+      });
+      it('should have creative.trackingEvents.pause', function() {
+        creative.trackingEvents['pause'].length.should.eql(1);
+      });
+      it('should have creative.trackingEvents.fullscreen', function() {
+        creative.trackingEvents['fullscreen'].length.should.eql(2);
+      });
+      it('should have creative.adParameters', function() {
+        creative.adParameters.should.not.be.ok;
+      });
     });
     describe('- wrapper', function() {
       var wrapper = path.join(process.cwd(), 'test', 'files', 'wrapper.xml')
