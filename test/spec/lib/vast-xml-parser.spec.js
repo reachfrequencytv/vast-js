@@ -40,7 +40,7 @@ describe('VastXmlParser', function() {
           .pipe(parser())
           .once('vastAdTagUri', function(uri) { vastAdTagUri = uri; })
           .on('end', function() {
-            vastAdTagUri.should.eql('http://localhost:3001');
+            vastAdTagUri.should.eql('http://localhost:1337');
             done();
           }).resume();
         ;
@@ -57,7 +57,7 @@ describe('VastXmlParser', function() {
           })
           .on('data', function(chunk) {  data = chunk })
           .on('end', function() {
-            data.ads[0].id.should.eql(223626102);
+            data.ads[1].id.should.eql(223626102);
             done();
           })
         ;

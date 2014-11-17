@@ -6,21 +6,24 @@ var EventEmitter = require('events').EventEmitter
 
 inherits(Vast, EventEmitter);
 function Vast(url) {
-  EventEmitter.call(this);
+  var self = this;
+  EventEmitter.call(self);
+  self.parser = parser()
+    .on('data', function(data) { self.data = data })
+    .on('end', function() { self.emit('parsed', self.data); })
+  ;
   if (url)
-    this.parse(url);
+    self.parse(url);
 }
 Vast.prototype.parse = function(url) {
   var self = this;
-  hyperquest(url)
-    .pipe(parser())
-    .on('data', function(data) {
-      self.data = data
-    })
-    .on('end', function() {
-      self.emit('parsed', self.data)
-    })
-  ;
+  function parseVastAdTagUri(uri) {
+    hyperquest(uri)
+      .pipe(self.parser, { end: false })
+      .on('vastAdTagUri', parseVastAdTagUri)
+    ;
+  };
+  parseVastAdTagUri(url);
 };
 
 module.exports = function(url) { return new Vast(url); }
