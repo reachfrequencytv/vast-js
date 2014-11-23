@@ -9,6 +9,7 @@
   },
   "scripts": {
     "testling": "testling -u",
+    "build": "browserify index.js -o build/vast.js --standalone vast",
     "test": "mocha --recursive --reporter spec test/spec"
   },
   "author": "Tom Buchok <tom@buchok.com> (http://buchok.com/)",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "browserify": "^6.3.2",
     "mocha": "^2.0.1",
-    "should": "^4.3.0"
+    "should": "^4.3.0",
+    "uglify": "^0.1.0"
   }
 }
