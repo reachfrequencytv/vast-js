@@ -9,6 +9,7 @@
   },
   "scripts": {
     "testling": "testling -u",
+    "start": "node test/public/server.js",
     "build": "browserify index.js -o build/vast.js --standalone vast",
     "test": "mocha --recursive --reporter spec test/spec"
   },

@@ -18,7 +18,7 @@ function Vast(url) {
 Vast.prototype.parse = function(url) {
   var self = this;
   function parseVastAdTagUri(uri) {
-    hyperquest(uri)
+    hyperquest({ uri: uri, withCredentials: false })
       .pipe(self.parser, { end: false })
       .on('vastAdTagUri', parseVastAdTagUri)
     ;

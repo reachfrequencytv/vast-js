@@ -19,13 +19,7 @@ function Vast(url) {
 Vast.prototype.parse = function(url) {
   var self = this;
   function parseVastAdTagUri(uri) {
-    hyperquest(uri)
-      .on('response', function(response) {
-        if (response.statusCode < 200 || response.statusCode > 399) {
-          self.emit('error', new Error('vast.js: Could not complete request to ' + uri));
-          this.abort();
-        }
-      })
+    hyperquest({ uri: uri, withCredentials: false })
       .pipe(self.parser, { end: false })
       .on('vastAdTagUri', parseVastAdTagUri)
     ;
