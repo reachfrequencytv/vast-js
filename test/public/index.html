@@ -1,0 +1,17 @@
+<html>
+<head>
+  <title></title>
+  <script type="text/javascript" src = "vast.js"></script>
+</head>
+<body>
+  <video id = 'player'
+         data-vast-xml = 'http://localhost:8000/dfa.xml' />
+  <script type="text/javascript">
+    vast('http://localhost:8000/dfa.xml')
+      .on('parsed', function(data) {
+        console.log(data);
+      })
+    ;
+  </script>
+</body>
+</html>
