@@ -10,7 +10,9 @@
   "scripts": {
     "testling": "testling -u",
     "start": "node test/public/server.js",
-    "build": "browserify index.js -o build/vast.js --standalone vast",
+    "build": "npm run bundle && npm run minify",
+    "bundle": "browserify index.js -o build/vast.js --standalone vast",
+    "minify": "cat build/vast.js | uglifyjs - > build/vast.min.js",
     "test": "mocha --recursive --reporter spec test/spec"
   },
   "author": "Tom Buchok <tom@buchok.com> (http://buchok.com/)",
@@ -26,6 +28,6 @@
     "browserify": "^6.3.2",
     "mocha": "^2.0.1",
     "should": "^4.3.0",
-    "uglify": "^0.1.0"
+    "uglify-js": "^2.4.15"
   }
 }
