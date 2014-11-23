@@ -92,7 +92,23 @@ describe('VastXmlParser', function() {
         creative.trackingEvents['fullscreen'].length.should.eql(2);
       });
       it('should have creative.adParameters', function() {
-        creative.adParameters.should.not.be.ok;
+        creative.adParameters.should.be.ok;
+      });
+      it('should have creative.clickTrackings array', function() {
+        Array.isArray(creative.clickTrackings).should.be.ok;
+      });
+      it('should have url, id attrs in clickTracking', function() {
+        creative.clickTrackings[0].url.should.be.ok;
+        creative.clickTrackings[0].id.should.be.ok;
+      })
+      it('should have creative.videoClicks.clickThrough array', function() {
+        creative.clickThrough.should.be.ok;
+      });
+      it('should have creative.mediaFiles array', function() {
+        Array.isArray(creative.mediaFiles).should.be.ok;
+      });
+      it('should have a mediaFile', function() {
+        creative.mediaFiles[0].delivery.should.eql('progressive');
       });
     });
     describe('- wrapper', function() {
