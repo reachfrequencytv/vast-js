@@ -71,16 +71,16 @@ describe('vast', function() {
       ad._data = {
         ads: [
           { 
-            impressions: ['http://localhost:1339/impression'],
+            impressions: [{ url: 'http://localhost:1339/impression' }],
             creatives: [
               {
                 type: 'linear',
                 duration: 4,
                 trackingEvents: {
-                  firstQuartile: ['http://localhost:1339/firstQuartile'],
-                  midpoint: ['http://localhost:1339/midpoint'],
-                  thirdQuartile: ['http://localhost:1339/thirdQuartile'],
-                  complete: ['http://localhost:1339/complete']
+                  firstQuartile: [{ url: 'http://localhost:1339/firstQuartile' }],
+                  midpoint: [{ url: 'http://localhost:1339/midpoint' }],
+                  thirdQuartile: [{ url: 'http://localhost:1339/thirdQuartile' }],
+                  complete: [{ url: 'http://localhost:1339/complete' }]
                 }
               }
             ]

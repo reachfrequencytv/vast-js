@@ -9,8 +9,11 @@ inherits(Vast, EventEmitter);
 function Vast(url) {
   var self = this;
   EventEmitter.call(self);
-  var handleTrackingUrls = function(urls) {
-    (urls || []).forEach(function(url) { hyperquest(url) });
+  var handleTrackingUrls = function(events) {
+    (events || []).forEach(function(event) {
+      if (event.url)
+        hyperquest({ uri: event.url, withCredentials: false });
+    });
   };
   self.once('impressions', handleTrackingUrls);
   self.once('firstQuartile', handleTrackingUrls);
@@ -29,7 +32,10 @@ function Vast(url) {
   if (url)
     self.parse(url);
 }
-
+Vast.prototype.currentAd = function() {
+  var self = this;
+  return ((self._data || {}).ads || [])[self._currentAdIndex];
+}
 Vast.prototype.previousAd = function() {
   var self = this;
   if (self._currentAdIndex > 0)
