@@ -64,6 +64,7 @@ describe('vast', function() {
         ads: [
           { creatives: [
               {
+                type: 'linear',
                 duration: 4,
                 trackingEvents: {
                   firstQuartiles: ['http://localhost:1339/firstQuartile'],

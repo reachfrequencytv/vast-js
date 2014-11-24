@@ -16,7 +16,7 @@ function Vast(url) {
   self.once('midpoints', handleTrackingUrls);
   self.once('thirdQuartiles', handleTrackingUrls);
   self.once('completes', handleTrackingUrls);
-
+  self._currentAdIndex = 0;
   self.parser = parser()
     .on('data', function(data) {
       self._data = data;
@@ -28,6 +28,22 @@ function Vast(url) {
   if (url)
     self.parse(url);
 }
+
+Vast.prototype.previousAd = function() {
+  var self = this;
+  if (self._currentAdIndex > 0)
+    self._currentAdIndex -= 1;
+  else
+    console.error('vast.js: No more `previous` ads. Currently at first ad.');
+};
+Vast.prototype.nextAd = function() {
+  var self = this;
+  if (self._currentAdIndex < self._data.ads.length - 1)
+    self._currentAdIndex += 1;
+  else
+    console.error('vast.js: No more `next` ads. Currently at last ad.');
+};
+
 Vast.prototype.parse = function(url) {
   var self = this;
   function parseVastAdTagUri(uri) {
@@ -41,16 +57,22 @@ Vast.prototype.parse = function(url) {
 
 Vast.prototype.timeUpdate = function(value) {
   var self = this;
-  var duration = self._data.ads[0].creatives[0].duration;
-  var progress = value / duration;
-  if (value / self._data.ads[0].creatives[0].duration >= .25)
-    self.emit('firstQuartiles', self._data.ads[0].creatives[0].trackingEvents['firstQuartiles']);
-  if (value / self._data.ads[0].creatives[0].duration >= .5)
-    self.emit('midpoints', self._data.ads[0].creatives[0].trackingEvents['midpoints']);
-  if (value / self._data.ads[0].creatives[0].duration >= .75)
-    self.emit('thirdQuartiles', self._data.ads[0].creatives[0].trackingEvents['thirdQuartiles']);
-  if (value / self._data.ads[0].creatives[0].duration >= .99)
-    self.emit('completes', self._data.ads[0].creatives[0].trackingEvents['completes']);
+  var ad = self._data.ads[self._currentAdIndex];
+  var creative = ad.creatives.filter(function(creative) {
+    return creative.type == 'linear';
+  })[0];
+  if (!creative)
+    return; // nothing to do, no matching creative.
+
+  var progress = value / creative.duration;
+  if (progress >= .25)
+    self.emit('firstQuartiles', creative.trackingEvents['firstQuartiles']);
+  if (progress >= .5)
+    self.emit('midpoints', creative.trackingEvents['midpoints']);
+  if (progress >= .75)
+    self.emit('thirdQuartiles', creative.trackingEvents['thirdQuartiles']);
+  if (progress >= .99)
+    self.emit('completes', creative.trackingEvents['completes']);
   return self;
 };
 
