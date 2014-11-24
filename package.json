@@ -18,6 +18,7 @@
   "author": "Tom Buchok <tom@buchok.com> (http://buchok.com/)",
   "license": "ISC",
   "dependencies": {
+    "clone": "^0.1.18",
     "core-util-is": "^1.0.1",
     "hyperquest": "^1.0.1",
     "inherits": "^2.0.1",
