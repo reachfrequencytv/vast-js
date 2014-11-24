@@ -33,15 +33,13 @@ Vast.prototype.previousAd = function() {
   var self = this;
   if (self._currentAdIndex > 0)
     self._currentAdIndex -= 1;
-  else
-    console.error('vast.js: No more `previous` ads. Currently at first ad.');
+  return self;
 };
 Vast.prototype.nextAd = function() {
   var self = this;
-  if (self._currentAdIndex < self._data.ads.length - 1)
+  if (self._currentAdIndex < ((self._data || {}).ads || []).length - 1)
     self._currentAdIndex += 1;
-  else
-    console.error('vast.js: No more `next` ads. Currently at last ad.');
+  return self;
 };
 
 Vast.prototype.parse = function(url) {

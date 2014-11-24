@@ -27,6 +27,12 @@ describe('vast', function() {
     it('should have a parser, with settings', function() {
       vast().parser.settings.maxRedirects.should.eql(10);
     });
+    it('should allow to cycle through next ad indices', function() {
+      vast().nextAd().nextAd().nextAd()._currentAdIndex.should.eql(0);
+    });
+    it('should allow to cycle through prevoius ad indices', function() {
+      vast().previousAd().previousAd().previousAd()._currentAdIndex.should.eql(0);
+    })
   });
   describe('#parse', function() {
     it('should parse an dfa file', function(done) {
