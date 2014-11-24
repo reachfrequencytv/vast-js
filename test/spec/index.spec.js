@@ -92,7 +92,7 @@ describe('vast', function() {
         thirdQuartiles.should.eql(1);
         completes.should.eql(1);
         done();
-      }, 50); // small delay to let requests finish.
+      }, 10); // small delay to let requests finish.
     });
   });
 });
