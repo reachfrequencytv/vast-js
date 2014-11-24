@@ -50,19 +50,19 @@ describe('vast', function() {
     });
   });
   describe('#timeUpdate', function() {
-    var firstQuartiles = midpoints = thirdQuartiles = completes = 0
+    var firstQuartile = midpoint = thirdQuartile = complete = 0
       , ad
     ;
     beforeEach(function() {
       http.createServer(function(req, res) {
         if (/firstQuartile/.test(req.url))
-          firstQuartiles += 1;
+          firstQuartile += 1;
         if (/midpoint/.test(req.url))
-          midpoints += 1;
+          midpoint += 1;
         if (/thirdQuartile/.test(req.url))
-          thirdQuartiles += 1;
+          thirdQuartile += 1;
         if (/complete/.test(req.url))
-          completes += 1;
+          complete += 1;
         res.end('ok!');
       }).listen(1339).unref();
       ad = vast();
@@ -73,10 +73,10 @@ describe('vast', function() {
                 type: 'linear',
                 duration: 4,
                 trackingEvents: {
-                  firstQuartiles: ['http://localhost:1339/firstQuartile'],
-                  midpoints: ['http://localhost:1339/midpoint'],
-                  thirdQuartiles: ['http://localhost:1339/thirdQuartile'],
-                  completes: ['http://localhost:1339/complete']
+                  firstQuartile: ['http://localhost:1339/firstQuartile'],
+                  midpoint: ['http://localhost:1339/midpoint'],
+                  thirdQuartile: ['http://localhost:1339/thirdQuartile'],
+                  complete: ['http://localhost:1339/complete']
                 }
               }
             ]
@@ -87,10 +87,10 @@ describe('vast', function() {
     it('should handle timeUpdate invocations', function(done) {
       ad.timeUpdate(4);
       setTimeout(function() {
-        firstQuartiles.should.eql(1);
-        midpoints.should.eql(1);
-        thirdQuartiles.should.eql(1);
-        completes.should.eql(1);
+        firstQuartile.should.eql(1);
+        midpoint.should.eql(1);
+        thirdQuartile.should.eql(1);
+        complete.should.eql(1);
         done();
       }, 10); // small delay to let requests finish.
     });

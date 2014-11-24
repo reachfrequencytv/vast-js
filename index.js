@@ -12,10 +12,10 @@ function Vast(url) {
   var handleTrackingUrls = function(urls) {
     (urls || []).forEach(function(url) { hyperquest(url) });
   };
-  self.once('firstQuartiles', handleTrackingUrls);
-  self.once('midpoints', handleTrackingUrls);
-  self.once('thirdQuartiles', handleTrackingUrls);
-  self.once('completes', handleTrackingUrls);
+  self.once('firstQuartile', handleTrackingUrls);
+  self.once('midpoint', handleTrackingUrls);
+  self.once('thirdQuartile', handleTrackingUrls);
+  self.once('complete', handleTrackingUrls);
   self._currentAdIndex = 0;
   self.parser = parser()
     .on('data', function(data) {
@@ -64,13 +64,13 @@ Vast.prototype.timeUpdate = function(value) {
 
   var progress = value / creative.duration;
   if (progress >= .25)
-    self.emit('firstQuartiles', creative.trackingEvents['firstQuartiles']);
+    self.emit('firstQuartile', creative.trackingEvents['firstQuartile']);
   if (progress >= .5)
-    self.emit('midpoints', creative.trackingEvents['midpoints']);
+    self.emit('midpoint', creative.trackingEvents['midpoint']);
   if (progress >= .75)
-    self.emit('thirdQuartiles', creative.trackingEvents['thirdQuartiles']);
+    self.emit('thirdQuartile', creative.trackingEvents['thirdQuartile']);
   if (progress >= .99)
-    self.emit('completes', creative.trackingEvents['completes']);
+    self.emit('complete', creative.trackingEvents['complete']);
   return self;
 };
 
