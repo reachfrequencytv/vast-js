@@ -50,11 +50,13 @@ describe('vast', function() {
     });
   });
   describe('#timeUpdate', function() {
-    var firstQuartile = midpoint = thirdQuartile = complete = 0
+    var firstQuartile = midpoint = thirdQuartile = complete = impression = 0
       , ad
     ;
     beforeEach(function() {
       http.createServer(function(req, res) {
+        if (/impression/.test(req.url))
+          impression += 1;
         if (/firstQuartile/.test(req.url))
           firstQuartile += 1;
         if (/midpoint/.test(req.url))
@@ -68,7 +70,9 @@ describe('vast', function() {
       ad = vast();
       ad._data = {
         ads: [
-          { creatives: [
+          { 
+            impressions: ['http://localhost:1339/impression'],
+            creatives: [
               {
                 type: 'linear',
                 duration: 4,
@@ -87,6 +91,7 @@ describe('vast', function() {
     it('should handle timeUpdate invocations', function(done) {
       ad.timeUpdate(4);
       setTimeout(function() {
+        impression.should.eql(1);
         firstQuartile.should.eql(1);
         midpoint.should.eql(1);
         thirdQuartile.should.eql(1);

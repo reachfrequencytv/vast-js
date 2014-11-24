@@ -12,6 +12,7 @@ function Vast(url) {
   var handleTrackingUrls = function(urls) {
     (urls || []).forEach(function(url) { hyperquest(url) });
   };
+  self.once('impressions', handleTrackingUrls);
   self.once('firstQuartile', handleTrackingUrls);
   self.once('midpoint', handleTrackingUrls);
   self.once('thirdQuartile', handleTrackingUrls);
@@ -53,6 +54,12 @@ Vast.prototype.parse = function(url) {
   parseVastAdTagUri(url);
 };
 
+Vast.prototype.impression = function() {
+  var self = this;
+  var ad = self._data.ads[self._currentAdIndex];
+  self.emit('impressions', ad.impressions);
+};
+
 Vast.prototype.timeUpdate = function(value) {
   var self = this;
   var ad = self._data.ads[self._currentAdIndex];
@@ -63,6 +70,8 @@ Vast.prototype.timeUpdate = function(value) {
     return; // nothing to do, no matching creative.
 
   var progress = value / creative.duration;
+  if (progress > 0)
+    self.emit('impressions', ad.impressions);
   if (progress >= .25)
     self.emit('firstQuartile', creative.trackingEvents['firstQuartile']);
   if (progress >= .5)
