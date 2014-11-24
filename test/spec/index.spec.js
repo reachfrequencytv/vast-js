@@ -44,6 +44,18 @@ describe('vast', function() {
     });
   });
   describe('#timeUpdate', function() {
-    it('should handle timeUpdate invocations');
+    var ad;
+    before(function(done) {
+      ad = vast('http://127.0.0.1:1338')
+        .on('parsed', function(data) { done() });
+      ;
+    })
+    it('should handle timeUpdate invocations', function(done) {
+      ad.timeUpdate(20)
+        .on('firstQuartiles', function(urls) {
+          console.log(urls);
+          done();
+        });
+    });
   });
 });

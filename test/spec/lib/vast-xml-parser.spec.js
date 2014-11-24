@@ -65,7 +65,7 @@ describe('VastXmlParser', function() {
         creative.type.should.eql('linear');
       });
       it('should have creative.duration', function() {
-        creative.duration.should.eql('00:00:58');
+        creative.duration.should.eql(58);
       });
       it('should have creative.trackingEvents.start', function() {
         creative.trackingEvents['start'].length.should.eql(1);

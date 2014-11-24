@@ -9,8 +9,12 @@ function Vast(url) {
   var self = this;
   EventEmitter.call(self);
   self.parser = parser()
-    .on('data', function(data) { self.data = data })
-    .on('end', function() { self.emit('parsed', self.data); })
+    .on('data', function(data) {
+      self.data = data;
+    })
+    .on('end', function() {
+      self.emit('parsed', self.data);
+    })
   ;
   if (url)
     self.parse(url);
@@ -24,6 +28,15 @@ Vast.prototype.parse = function(url) {
     ;
   };
   parseVastAdTagUri(url);
+};
+
+Vast.prototype.timeUpdate = function(value) {
+  var self = this;
+  if (value / self.data.ads[1].creatives[0].duration > .25)
+    process.nextTick(function() {
+      self.emit('firstQuartiles', self.data.ads[1].creatives[0].trackingEvents['firstQuartile']);
+    });
+  return self;
 };
 
 module.exports = function(url) { return new Vast(url); }
