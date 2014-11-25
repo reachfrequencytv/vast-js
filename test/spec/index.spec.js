@@ -49,7 +49,7 @@ describe('vast', function() {
       ;
     });
   });
-  describe('#timeUpdate', function() {
+  describe('- tracking', function() {
     var firstQuartile = midpoint = thirdQuartile = complete = impression = 0
       , ad
     ;
@@ -64,11 +64,15 @@ describe('vast', function() {
                 type: 'linear',
                 duration: 4,
                 trackingEvents: {
-                  firstQuartile: [{ url: 'http://localhost:1339/firstQuartile' }],
-                  midpoint: [{ url: 'http://localhost:1339/midpoint' }],
-                  thirdQuartile: [{ url: 'http://localhost:1339/thirdQuartile' }],
-                  complete: [{ url: 'http://localhost:1339/complete' }]
-                }
+                  firstQuartile: [{ url: 'http://example.com?firstQuartile' }],
+                  midpoint: [{ url: 'http://example.com?midpoint' }],
+                  thirdQuartile: [{ url: 'http://example.com?thirdQuartile' }],
+                  complete: [{ url: 'http://example.com?complete' }]
+                },
+                clickTrackings: [
+                  { url: 'http://example.com?clickTracking' }
+                ],
+                clickThrough: { url: 'http://example.com?clickThrough' }
               }
             ]
           },
@@ -76,6 +80,24 @@ describe('vast', function() {
       };
     })
     it('should handle timeUpdate invocations', function(done) {
+      var trackingUrlsCount = 0
+        , clickThroughUrl
+      ;
+      ad.on('trackingEvent', function(events) {
+          trackingUrlsCount += events.length;
+        })
+        .on('clickThrough', function(event) {
+          clickThroughUrl = event.url;
+        })
+      ;
+      ad.clickThrough();
+      process.nextTick(function() {
+        trackingUrlsCount.should.eql(1);
+        clickThroughUrl.should.be.ok;
+        done();
+      });
+    });
+    it('should handle clickThrough invocations', function(done) {
       var trackingUrlsCount = 0;
       ad.on('trackingEvent', function(urls) {
           trackingUrlsCount += urls.length;
@@ -86,6 +108,6 @@ describe('vast', function() {
         trackingUrlsCount.should.eql(5);
         done();
       });
-    });
+    })
   });
 });

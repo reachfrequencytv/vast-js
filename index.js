@@ -75,12 +75,24 @@ Vast.prototype.impression = function() {
   self.emit('impressions', ad.impressions);
 };
 
-Vast.prototype.timeUpdate = function(value) {
+Vast.prototype.clickThrough = function() {
   var self = this;
-  var ad = self._data.ads[self._currentAdIndex];
-  var creative = ad.creatives.filter(function(creative) {
+  var creative = linearCreative(self.currentAd());
+  self.emit('trackingEvent', creative.clickTrackings);
+  self.emit('clickThrough', creative.clickThrough);
+  return self;
+};
+
+var linearCreative = function(ad) {
+  return ad.creatives.filter(function(creative) {
     return creative.type == 'linear';
   })[0];
+}
+
+Vast.prototype.timeUpdate = function(value) {
+  var self = this;
+  var ad = self.currentAd();
+  var creative = linearCreative(ad);
   if (!creative)
     return self; // nothing to do, no matching creative.
 
