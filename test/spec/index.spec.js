@@ -54,19 +54,6 @@ describe('vast', function() {
       , ad
     ;
     beforeEach(function() {
-      http.createServer(function(req, res) {
-        if (/impression/.test(req.url))
-          impression += 1;
-        if (/firstQuartile/.test(req.url))
-          firstQuartile += 1;
-        if (/midpoint/.test(req.url))
-          midpoint += 1;
-        if (/thirdQuartile/.test(req.url))
-          thirdQuartile += 1;
-        if (/complete/.test(req.url))
-          complete += 1;
-        res.end('ok!');
-      }).listen(1339).unref();
       ad = vast();
       ad._data = {
         ads: [
@@ -89,15 +76,16 @@ describe('vast', function() {
       };
     })
     it('should handle timeUpdate invocations', function(done) {
+      var trackingUrlsCount = 0;
+      ad.on('trackingEvent', function(urls) {
+          trackingUrlsCount += urls.length;
+        })
+      ;
       ad.timeUpdate(4);
       setTimeout(function() {
-        impression.should.eql(1);
-        firstQuartile.should.eql(1);
-        midpoint.should.eql(1);
-        thirdQuartile.should.eql(1);
-        complete.should.eql(1);
+        trackingUrlsCount.should.eql(5);
         done();
-      }, 10); // small delay to let requests finish.
+      }, 50);
     });
   });
 });

@@ -9,17 +9,6 @@ inherits(Vast, EventEmitter);
 function Vast(url) {
   var self = this;
   EventEmitter.call(self);
-  var handleTrackingUrls = function(events) {
-    (events || []).forEach(function(event) {
-      if (event.url)
-        hyperquest({ uri: event.url, withCredentials: false });
-    });
-  };
-  self.once('impressions', handleTrackingUrls);
-  self.once('firstQuartile', handleTrackingUrls);
-  self.once('midpoint', handleTrackingUrls);
-  self.once('thirdQuartile', handleTrackingUrls);
-  self.once('complete', handleTrackingUrls);
   self._currentAdIndex = 0;
   self.parser = parser()
     .on('data', function(data) {
@@ -29,23 +18,42 @@ function Vast(url) {
       self.emit('parsed', clone(self._data));
     })
   ;
+  // initialize tracking event listeners:
+  self._setTrackingEventListeners();
   if (url)
     self.parse(url);
 }
 Vast.prototype.currentAd = function() {
   var self = this;
   return ((self._data || {}).ads || [])[self._currentAdIndex];
-}
+};
+
+Vast.prototype._setTrackingEventListeners = function() {
+  var self = this;
+  var handleTrackingUrls = function(events) {
+    self.emit('trackingEvent', events);
+  }
+  self.once('impressions', handleTrackingUrls);
+  self.once('firstQuartile', handleTrackingUrls);
+  self.once('midpoint', handleTrackingUrls);
+  self.once('thirdQuartile', handleTrackingUrls);
+  self.once('complete', handleTrackingUrls);
+};
+
 Vast.prototype.previousAd = function() {
   var self = this;
-  if (self._currentAdIndex > 0)
+  if (self._currentAdIndex > 0) {
     self._currentAdIndex -= 1;
+    self._setTrackingEventListeners();
+  }
   return self;
 };
 Vast.prototype.nextAd = function() {
   var self = this;
-  if (self._currentAdIndex < ((self._data || {}).ads || []).length - 1)
+  if (self._currentAdIndex < ((self._data || {}).ads || []).length - 1) {
     self._currentAdIndex += 1;
+    self._setTrackingEventListeners();
+  }
   return self;
 };
 
@@ -73,7 +81,7 @@ Vast.prototype.timeUpdate = function(value) {
     return creative.type == 'linear';
   })[0];
   if (!creative)
-    return; // nothing to do, no matching creative.
+    return self; // nothing to do, no matching creative.
 
   var progress = value / creative.duration;
   if (progress > 0)
