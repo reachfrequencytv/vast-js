@@ -13,8 +13,10 @@
     document.querySelector('#player')
       .addEventListener('loadstart', function(event) {
         var player = event.target;
+        player.volume = 0;
         player.addEventListener('playing', function handlePlay(event) {
           player.removeEventListener('playing', handlePlay);
+          player.style.display = 'none';
           player.pause();
           vast('http://127.0.0.1:3000/dfa.xml')
             .on('parsed', function(data) {
@@ -25,6 +27,14 @@
               document.body.appendChild(adPlayer);
               adPlayer.src = 'https://ia902305.us.archive.org/35/items/Pepa-creativeCommonsMp4956/Pepa-creativeCommonsMp4956_512kb.mp4'
               adPlayer.play();
+              var destroyAd = function(event) {
+                event.target.parentNode.removeChild(event.target);
+                player.style.display = 'block';
+                player.volume = 1;
+                player.play();
+              }
+              adPlayer.addEventListener('ended', destroyAd)
+              adPlayer.addEventListener('error', destroyAd);
               adPlayer.addEventListener('timeupdate', function(event) {
                 self.timeUpdate(event.target.currentTime);
               });
