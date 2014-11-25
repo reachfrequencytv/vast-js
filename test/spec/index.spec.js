@@ -82,10 +82,10 @@ describe('vast', function() {
         })
       ;
       ad.timeUpdate(4);
-      setTimeout(function() {
+      process.nextTick(function() {
         trackingUrlsCount.should.eql(5);
         done();
-      }, 50);
+      });
     });
   });
 });

@@ -48,6 +48,7 @@ Vast.prototype.previousAd = function() {
   }
   return self;
 };
+
 Vast.prototype.nextAd = function() {
   var self = this;
   if (self._currentAdIndex < ((self._data || {}).ads || []).length - 1) {
