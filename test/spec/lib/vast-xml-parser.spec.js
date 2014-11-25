@@ -101,8 +101,8 @@ describe('VastXmlParser', function() {
         creative.clickTrackings[0].url.should.be.ok;
         creative.clickTrackings[0].id.should.be.ok;
       })
-      it('should have creative.videoClicks.clickThrough array', function() {
-        creative.clickThrough.should.be.ok;
+      it('should have creative.clickThrough object', function() {
+        creative.clickThrough.url.should.be.ok;
       });
       it('should have creative.mediaFiles array', function() {
         Array.isArray(creative.mediaFiles).should.be.ok;
